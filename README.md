@@ -21,10 +21,9 @@ An AI-powered security scanner that analyzes repositories for vulnerabilities an
   - Offers risk assessment
   - Supports OpenAI and Anthropic Claude
 
-- 📊 **Comprehensive Reporting**: Detailed JSON reports
+- 📊 **Comprehensive Reporting**: Detailed text reports
   - Individual repository reports
   - Summary reports across all scanned repos
-  - Console output with key findings
 
 ## Installation
 
