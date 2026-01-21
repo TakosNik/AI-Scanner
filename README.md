@@ -15,11 +15,11 @@ An AI-powered security scanner that analyzes repositories for vulnerabilities an
   - Compares current versions with latest available versions
   - Categorizes updates by severity (major/minor/patch)
 
-- 🤖 **AI-Powered Analysis**: Optional AI integration
+- 🤖 **AI-Powered Analysis**: Built-in AI integration (enabled by default)
   - Summarizes critical security issues
   - Provides prioritized recommendations
   - Offers risk assessment
-  - Supports OpenAI and Anthropic Claude
+  - Supports OpenAI, Anthropic Claude, and local models
 
 - 📊 **Comprehensive Reporting**: Detailed text reports
   - Individual repository reports
@@ -29,7 +29,7 @@ An AI-powered security scanner that analyzes repositories for vulnerabilities an
 
 1. Clone this repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/TakosNik/AI-Scanner.git
 cd "Scanner AI"
 ```
 
@@ -77,7 +77,43 @@ OUTPUT_DIR=./scan_results
 LOG_LEVEL=INFO
 ```
 
-**Note**: The project is pre-configured to use your local `gpt-oss-20b` model at `http://10.195.159.207:1234`. No API key is needed for local models.
+## AI Configuration
+
+The scanner includes AI-powered analysis **enabled by default**. You must configure an AI provider to use the scanner:
+
+### Local Model (Recommended for Privacy)
+
+Your project is pre-configured to use a local `gpt-oss-20b` model:
+
+```env
+OPENAI_API_KEY=not-needed-for-local
+OPENAI_BASE_URL=http://10.195.159.207:1234/v1
+OPENAI_MODEL=gpt-oss-20b
+```
+
+### Cloud OpenAI
+
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+OPENAI_MODEL=gpt-4
+# Remove or comment out OPENAI_BASE_URL for cloud use
+```
+
+### Anthropic Claude
+
+```env
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+```
+
+Then use `--ai-provider anthropic` when running the scanner.
+
+### Disabling AI
+
+To scan without AI analysis, use the `--no-ai` flag:
+
+```bash
+python src/scanner_agent.py --no-ai
+```
 
 ### Repository List
 
@@ -91,11 +127,13 @@ https://github.com/username/another-repo.git
 
 ## Usage
 
-### Basic Scan
+### Basic Scan (with AI)
 
 ```bash
 python src/scanner_agent.py
 ```
+
+This runs a complete scan with AI analysis using your configured provider.
 
 ### Advanced Options
 
@@ -171,8 +209,8 @@ Scanner AI/
 - **packaging**: Version comparison utilities
 - **bandit**: Python code security scanner
 - **safety**: Python dependency vulnerability checker
-- **openai** (optional): OpenAI API client
-- **anthropic** (optional): Anthropic Claude API client
+- **openai**: OpenAI API client (required for OpenAI or local models)
+- **anthropic**: Anthropic Claude API client (required for Claude)
 
 ## Scanning Details
 
@@ -198,16 +236,19 @@ For Drupal projects (identified by `composer.json`):
 
 ## AI Analysis
 
-When enabled, the AI analyzer:
+The AI analyzer is **enabled by default** and runs after each repository scan.
+
+When running, the AI analyzer:
 
 1. Reviews all scan findings
 2. Identifies critical security issues
 3. Provides prioritized recommendations
 4. Offers risk assessment and remediation guidance
 
-Supports:
-- **OpenAI GPT-4**: Set `OPENAI_API_KEY`
-- **Anthropic Claude**: Set `ANTHROPIC_API_KEY`
+Supported providers:
+- **Local Models**: Any OpenAI-compatible endpoint (e.g., LM Studio, LocalAI)
+- **OpenAI GPT-4/GPT-3.5**: Set `OPENAI_API_KEY`
+- **Anthropic Claude**: Set `ANTHROPIC_API_KEY` and use `--ai-provider anthropic`
 
 ## Troubleshooting
 
@@ -224,11 +265,12 @@ pip install safety bandit
 - Check repository URLs are correct
 - For private repos, ensure SSH keys or credentials are configured
 
-### AI Analysis Not Working
+### AI Configuration Issues
 
-- Verify API keys are set in `.env`
-- Check API key has sufficient credits/quota
-- Try with `--no-ai` flag to run without AI
+- Verify API keys are set correctly in `.env`
+- Check that your AI provider endpoint is accessible (for local models)
+- Ensure API key has sufficient credits/quota (for cloud providers)
+- Use `--no-ai` flag to run without AI if needed for troubleshooting
 
 ## Contributing
 
