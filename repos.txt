@@ -1,0 +1,8 @@
+# Repository List
+# Add repository URLs here, one per line
+# Examples:
+# https://github.com/username/repo1.git
+# https://github.com/username/repo2.git
+
+https://github.com/TakosNik/drupal-10-development
+https://github.com/pfizer/ednlt-testprovisioning01
